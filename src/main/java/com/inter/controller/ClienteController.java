@@ -1,0 +1,34 @@
+package com.inter.controller;
+
+import com.inter.dto.ClienteDTO;
+import com.inter.dto.RetornoPadraoDTO;
+import com.inter.service.ClienteService;
+import com.inter.utils.Mensagens;
+import com.inter.utils.Utils;
+import io.micronaut.http.annotation.Body;
+import io.micronaut.http.annotation.Controller;
+import io.micronaut.http.annotation.Post;
+import io.micronaut.validation.Validated;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import javax.validation.Valid;
+
+@Validated
+@RequiredArgsConstructor
+@Controller("/cliente")
+public class ClienteController {
+
+    private final ClienteService clienteService;
+
+    @Post
+    public ResponseEntity<RetornoPadraoDTO> cadastrar(@Body @Valid ClienteDTO clienteDTO) {
+        try {
+            return new ResponseEntity<>(clienteService.cadastrar(clienteDTO), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(Utils.retornoPadrao(Mensagens.ERRO_CADASTRAR_CLIENTE), HttpStatus.BAD_REQUEST);
+        }
+    }
+}
+
