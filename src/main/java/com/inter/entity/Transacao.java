@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -14,7 +15,8 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Transacao {
+@Table(name = "transacao")
+public class Transacao implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,15 +34,17 @@ public class Transacao {
     @Column(name = "valor_parcela")
     private BigDecimal valorDaParcela;
 
-    @Column(name = "quantidade_parcelas")
-    private Integer quantidadeDeParcelas;
+    @Column(name = "numero_parcelas")
+    private Integer numeroDeParcelas;
 
     @Column(name = "conta_corrente")
-    private String numeroContaCorrente;
+    private Long numeroContaCorrente;
+
+    @Column(name = "parcela")
+    private Integer parcela;
 
     @ManyToOne
     @JoinColumn(name = "id_fatura")
     private Fatura fatura;
-
 
 }

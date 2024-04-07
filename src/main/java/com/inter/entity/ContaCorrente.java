@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
@@ -13,20 +14,21 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ContaCorrente {
+@Table(name = "conta_corrente")
+public class ContaCorrente implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(name = "numero_conta")
-    private String numeroConta;
+    private Long numeroConta;
 
     @OneToMany(mappedBy = "contaCorrente", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Fatura> faturas;
 
     @OneToOne
-    @JoinColumn(name = "id_cliente")
+    @JoinColumn(name = "id_cliente", nullable = false)
     private Cliente cliente;
 
 }

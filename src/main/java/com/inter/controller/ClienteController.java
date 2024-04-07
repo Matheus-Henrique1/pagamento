@@ -3,7 +3,7 @@ package com.inter.controller;
 import com.inter.dto.ClienteDTO;
 import com.inter.dto.RetornoPadraoDTO;
 import com.inter.service.ClienteService;
-import com.inter.utils.Mensagens;
+import com.inter.service.FaturaService;
 import com.inter.utils.Utils;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
@@ -21,14 +21,19 @@ import javax.validation.Valid;
 public class ClienteController {
 
     private final ClienteService clienteService;
+    private final FaturaService faturaService;
+
 
     @Post
     public ResponseEntity<RetornoPadraoDTO> cadastrar(@Body @Valid ClienteDTO clienteDTO) {
         try {
-            return new ResponseEntity<>(clienteService.cadastrar(clienteDTO), HttpStatus.OK);
+            return new ResponseEntity<>(clienteService.cadastrar(clienteDTO), HttpStatus.CREATED);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(Utils.retornoPadrao(e.getMessage()), HttpStatus.CONFLICT);
         } catch (Exception e) {
-            return new ResponseEntity<>(Utils.retornoPadrao(Mensagens.ERRO_CADASTRAR_CLIENTE), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(Utils.retornoPadrao(e.getLocalizedMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 }
 
