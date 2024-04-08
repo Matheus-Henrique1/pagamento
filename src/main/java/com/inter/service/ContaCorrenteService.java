@@ -8,4 +8,5 @@ public interface ContaCorrenteService {
     ContaCorrente cadastrar(Cliente cliente);
 
     ContaCorrente buscarContaCorrente(Long numeroContaCorrente);
+
 }

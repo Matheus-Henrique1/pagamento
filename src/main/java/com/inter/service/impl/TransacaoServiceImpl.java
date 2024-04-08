@@ -36,15 +36,17 @@ public class TransacaoServiceImpl implements TransacaoService {
         ContaCorrente cc = contaCorrenteService.buscarContaCorrente(transacaoDTO.getNumeroContaCorrente());
         List<Fatura> faturasFuturas = faturaService.buscarFaturasFuturas();
         Fatura fatura = faturaService.buscarFaturaAberta(transacaoDTO.getNumeroContaCorrente());
-        Integer mesDaFaturaAberta = fatura.getMesDaFatura();
+        Integer mesDaFaturaAberta = fatura.getMesDaFatura() == null ? transacaoDTO.getDataTransacao().getMonthValue() : fatura.getMesDaFatura();
         Integer numeroDeParcelas = transacaoDTO.getNumeroDeParcelas();
 
         if (numeroDeParcelas == 1) {
             fatura.setMesDaFatura(transacaoDTO.getDataTransacao().getMonthValue());
+            transacaoDTO.setValorDaParcela(transacaoDTO.getValorDaTransacao().divide(BigDecimal.valueOf(numeroDeParcelas), 2, RoundingMode.HALF_UP));
             transacaoRepository.save(Converte.converteTransacaoDTOTransacao(transacaoDTO, fatura));
             return new RetornoPadraoDTO(Mensagens.TRANSACAO_SUCESSO, fatura.getId());
         } else {
             transacaoDTO.setParcela(1);
+            fatura.setMesDaFatura(transacaoDTO.getDataTransacao().getMonthValue());
             transacaoDTO.setValorDaParcela(transacaoDTO.getValorDaTransacao().divide(BigDecimal.valueOf(numeroDeParcelas), 2, RoundingMode.HALF_UP));
             transacaoRepository.save(Converte.converteTransacaoDTOTransacao(transacaoDTO, fatura));
             if (faturasFuturas.isEmpty()) {
@@ -61,7 +63,7 @@ public class TransacaoServiceImpl implements TransacaoService {
             }
         }
 
-        return new RetornoPadraoDTO(Mensagens.TRANSACAO_SUCESSO, "teste");
+        return new RetornoPadraoDTO(Mensagens.TRANSACAO_SUCESSO, fatura.getId());
     }
 
     @Override

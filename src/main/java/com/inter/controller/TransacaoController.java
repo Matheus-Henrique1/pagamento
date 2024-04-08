@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import javax.validation.Valid;
+
 @Validated
 @RequiredArgsConstructor
 @Controller("/transacao")
@@ -17,7 +19,7 @@ public class TransacaoController {
     private final TransacaoService transacaoService;
 
     @Post
-    public ResponseEntity<RetornoPadraoDTO> criarTransacao(@Body TransacaoDTO transacaoDTO) {
+    public ResponseEntity<RetornoPadraoDTO> criarTransacao(@Body @Valid TransacaoDTO transacaoDTO) {
         return new ResponseEntity<>(transacaoService.criarTransacao(transacaoDTO), HttpStatus.CREATED);
 
     }

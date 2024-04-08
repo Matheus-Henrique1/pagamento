@@ -1,6 +1,5 @@
 package com.inter.repository;
 
-import com.inter.entity.Fatura;
 import com.inter.entity.Transacao;
 import io.micronaut.data.annotation.Query;
 import io.micronaut.data.annotation.Repository;
@@ -18,4 +17,5 @@ public interface TransacaoRepository extends CrudRepository<Transacao, Long> {
             "ON FT.id_conta_corrente = CC.id " +
             "WHERE CC.numero_conta = :contaCorrente AND FT.mes_fatura = :mes", nativeQuery = true)
     List<Transacao> buscaFaturaPorMesEContaCorrente(Long mes, Long contaCorrente);
+
 }

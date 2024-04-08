@@ -15,8 +15,12 @@ public class Mensagens {
     public static final String CODIGO_MES_INVALIDO = "Código do mês inválido";
 
     //Mensagens sobre transações
-    public static final String TRANSACAO_SUCESSO = "Transação processada com sucesso";
-
-
+    public static final String TRANSACAO_SUCESSO = "Transação processada com sucesso. Abaixo id da Fatura!";
+    public static final String DATA_TRANSACAO_OBRIGATORIO = "O campo data transação é obrigatório.";
+    public static final String NOME_ESTABELECIMENTO_OBRIGATORIO = "O campo data nome estabelecimento é obrigatório.";
+    public static final String VALOR_TRANSACAO_OBRIGATORIO = "O campo data valor da transação é obrigatório.";
+    public static final String VALOR_PARCELA_OBRIGATORIO = "O campo data valor da parcela é obrigatório.";
+    public static final String NUMERO_PARCELAS_OBRIGATORIO = "O campo data numero de parcelas é obrigatório.";
+    public static final String NUMERO_CONTA_CORRENTE_OBRIGATORIO = "O campo data numero conta corrente é obrigatório.";
 
 }

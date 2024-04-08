@@ -4,7 +4,6 @@ import com.inter.dto.FaturaDTO;
 import com.inter.dto.RetornoPadraoDTO;
 import com.inter.entity.ContaCorrente;
 import com.inter.entity.Fatura;
-import com.inter.enums.MesesEnum;
 import com.inter.enums.StatusFaturaEnum;
 import com.inter.repository.FaturaRepository;
 import com.inter.service.FaturaService;
@@ -13,7 +12,6 @@ import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 
 import javax.transaction.Transactional;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +26,6 @@ public class FaturaServiceImpl implements FaturaService {
     public Fatura criarPrimeiraFatura(ContaCorrente contaCorrente) {
         Fatura fatura = new Fatura();
         fatura.setStatus(StatusFaturaEnum.ABERTA.getDescricao());
-        fatura.setMesDaFatura(LocalDate.now().getMonth().getValue());
         fatura.setContaCorrente(contaCorrente);
         fatura = faturaRepository.save(fatura);
         return fatura;

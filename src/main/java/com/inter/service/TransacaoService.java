@@ -8,4 +8,5 @@ public interface TransacaoService {
     RetornoPadraoDTO criarTransacao(TransacaoDTO transacaoDTO);
 
     RetornoPadraoDTO buscaTransacoesPorMesEContaCorrente(Long mes, Long contaCorrente);
+
 }
