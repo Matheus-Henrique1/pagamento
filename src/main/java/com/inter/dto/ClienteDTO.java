@@ -12,7 +12,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Introspected
 @Getter
@@ -31,7 +31,6 @@ public class ClienteDTO implements Serializable {
     @Size(min = 11, max = 11, message = Mensagens.CPF_CARACTERES)
     private String cpf;
     @NotNull(message = Mensagens.DT_NASCIMENTO_OBRIGATORIO)
-    private Date datNascimento;
-    private String contaCorrente;
+    private LocalDate datNascimento;
 
 }

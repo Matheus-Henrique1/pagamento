@@ -1,5 +1,6 @@
 package com.inter.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,13 +19,14 @@ import java.util.List;
 public class ContaCorrente implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "numero_conta")
     private Long numeroConta;
 
-    @OneToMany(mappedBy = "contaCorrente", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("contaCorrente")
+    @OneToMany(mappedBy = "contaCorrente", cascade = CascadeType.ALL)
     private List<Fatura> faturas;
 
     @OneToOne

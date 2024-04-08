@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -18,7 +19,7 @@ import java.util.Date;
 public class Cliente implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "nome")
@@ -28,9 +29,6 @@ public class Cliente implements Serializable {
     private String cpf;
 
     @Column(name = "data_nascimento")
-    private Date datNascimento;
-
-    @OneToOne(mappedBy = "cliente", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private ContaCorrente contaCorrente;
+    private LocalDate datNascimento;
 
 }

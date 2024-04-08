@@ -1,5 +1,6 @@
 package com.inter.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,7 +9,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -19,11 +20,11 @@ import java.util.Date;
 public class Transacao implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "data_transacao")
-    private Date dataTransacao;
+    private LocalDate dataTransacao;
 
     @Column(name = "nome_estabelecimento")
     private String nomeEstabelecimento;
@@ -43,6 +44,7 @@ public class Transacao implements Serializable {
     @Column(name = "parcela")
     private Integer parcela;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "id_fatura")
     private Fatura fatura;

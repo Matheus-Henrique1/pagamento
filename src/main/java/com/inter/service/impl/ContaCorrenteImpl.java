@@ -27,10 +27,11 @@ public class ContaCorrenteImpl implements ContaCorrenteService {
         cc.setCliente(cliente);
         cc.setNumeroConta(ultimaConta.map(aLong -> aLong + 1).orElse(numInicial));
         cc = contaCorrenteRepository.save(cc);
-        faturaService.criarFatura(cc);
+        faturaService.criarPrimeiraFatura(cc);
         return cc;
     }
 
+    @Transactional
     @Override
     public ContaCorrente buscarContaCorrente(Long numeroContaCorrente) {
         return contaCorrenteRepository.findByNumeroConta(numeroContaCorrente);

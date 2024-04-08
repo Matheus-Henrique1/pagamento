@@ -3,7 +3,6 @@ package com.inter.controller;
 import com.inter.dto.ClienteDTO;
 import com.inter.dto.RetornoPadraoDTO;
 import com.inter.service.ClienteService;
-import com.inter.service.FaturaService;
 import com.inter.utils.Utils;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
@@ -21,7 +20,6 @@ import javax.validation.Valid;
 public class ClienteController {
 
     private final ClienteService clienteService;
-    private final FaturaService faturaService;
 
 
     @Post

@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Introspected
 @Getter
@@ -17,15 +17,11 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class TransacaoDTO implements Serializable {
+public class FaturaDTO implements Serializable {
 
     private Long id;
-    private LocalDate dataTransacao;
-    private String nomeEstabelecimento;
-    private BigDecimal valorDaTransacao;
-    private BigDecimal valorDaParcela;
-    private Integer numeroDeParcelas;
-    private Long numeroContaCorrente;
-    private Integer parcela;
+    private String status;
+    private Integer mesDaFatura;
+    private List<TransacaoDTO> transacoes = new ArrayList<>();
 
 }
