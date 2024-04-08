@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 
 @Singleton
@@ -45,7 +46,7 @@ public class TransacaoServiceImpl implements TransacaoService {
             transacaoRepository.save(Converte.converteTransacaoDTOTransacao(transacaoDTO, fatura));
             return new RetornoPadraoDTO(Mensagens.TRANSACAO_SUCESSO, fatura.getId());
         } else {
-            transacaoDTO.setParcela(1);
+            transacaoDTO.setParcelaAtual(1);
             fatura.setMesDaFatura(transacaoDTO.getDataTransacao().getMonthValue());
             transacaoDTO.setValorDaParcela(transacaoDTO.getValorDaTransacao().divide(BigDecimal.valueOf(numeroDeParcelas), 2, RoundingMode.HALF_UP));
             transacaoRepository.save(Converte.converteTransacaoDTOTransacao(transacaoDTO, fatura));
@@ -56,25 +57,26 @@ public class TransacaoServiceImpl implements TransacaoService {
                     faturaFutura.setContaCorrente(cc);
                     faturaFutura.setMesDaFatura(mesDaFaturaAberta > 12 ? 1 : (i - 1));
                     transacaoDTO.setValorDaParcela(transacaoDTO.getValorDaTransacao().divide(BigDecimal.valueOf(numeroDeParcelas), 2, RoundingMode.HALF_UP));
-                    transacaoDTO.setParcela(i);
+                    transacaoDTO.setParcelaAtual(i);
                     faturaFutura.getTransacoes().add(Converte.converteTransacaoDTOTransacao(transacaoDTO, faturaFutura));
                     faturaRepository.save(faturaFutura);
                 }
             }
         }
-
         return new RetornoPadraoDTO(Mensagens.TRANSACAO_SUCESSO, fatura.getId());
     }
 
+    @Transactional
     @Override
     public RetornoPadraoDTO buscaTransacoesPorMesEContaCorrente(Long mes, Long contaCorrente) {
         RetornoPadraoDTO retorno = new RetornoPadraoDTO<>();
         List<Transacao> transacao = transacaoRepository.buscaFaturaPorMesEContaCorrente(mes, contaCorrente);
-
-        retorno.setDados(transacao);
+        List<TransacaoDTO> listaTransacaoDTO = new ArrayList<>();
+        transacao.forEach(t->{
+            listaTransacaoDTO.add(Converte.converterTransacaoParaTransacaoDTO(t));
+        });
+        retorno.setDados(listaTransacaoDTO);
         return retorno;
-
     }
-
 
 }

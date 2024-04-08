@@ -37,6 +37,6 @@ public class TransacaoDTO implements Serializable {
     private Integer numeroDeParcelas;
     @NotNull(message = Mensagens.NUMERO_CONTA_CORRENTE_OBRIGATORIO)
     private Long numeroContaCorrente;
-    private Integer parcela;
+    private Integer parcelaAtual;
 
 }

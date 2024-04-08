@@ -37,7 +37,7 @@ public class Converte {
         transacaoDTO.setValorDaTransacao(transacao.getValorDaTransacao());
         transacaoDTO.setValorDaParcela(transacao.getValorDaParcela());
         transacaoDTO.setNumeroDeParcelas(transacao.getNumeroDeParcelas());
-        transacaoDTO.setParcela(transacao.getParcela());
+        transacaoDTO.setParcelaAtual(transacao.getParcela());
         return transacaoDTO;
     }
 
@@ -70,7 +70,7 @@ public class Converte {
         transacao.setNumeroContaCorrente(transacaoDTO.getNumeroContaCorrente());
         transacao.setNumeroDeParcelas(transacaoDTO.getNumeroDeParcelas());
         transacao.setFatura(fatura);
-        transacao.setParcela(transacaoDTO.getParcela());
+        transacao.setParcela(transacaoDTO.getParcelaAtual());
         transacao.setValorDaParcela(transacaoDTO.getValorDaParcela());
         return transacao;
     }

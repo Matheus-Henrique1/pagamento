@@ -3,6 +3,7 @@ package com.inter.controller;
 import com.inter.dto.RetornoPadraoDTO;
 import com.inter.dto.TransacaoDTO;
 import com.inter.service.TransacaoService;
+import com.inter.utils.Utils;
 import io.micronaut.http.annotation.*;
 import io.micronaut.validation.Validated;
 import lombok.RequiredArgsConstructor;
@@ -20,14 +21,20 @@ public class TransacaoController {
 
     @Post
     public ResponseEntity<RetornoPadraoDTO> criarTransacao(@Body @Valid TransacaoDTO transacaoDTO) {
-        return new ResponseEntity<>(transacaoService.criarTransacao(transacaoDTO), HttpStatus.CREATED);
-
+        try {
+            return new ResponseEntity<>(transacaoService.criarTransacao(transacaoDTO), HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(Utils.retornoPadrao(e.getLocalizedMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Get(value = "/buscar-por-mes-e-conta/{mes}/{contaCorrente}")
     public ResponseEntity<RetornoPadraoDTO> buscaTransacoesPorMesEContaCorrente(@PathVariable Long mes, @PathVariable Long contaCorrente) {
-
-        return new ResponseEntity<>(transacaoService.buscaTransacoesPorMesEContaCorrente(mes, contaCorrente), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(transacaoService.buscaTransacoesPorMesEContaCorrente(mes, contaCorrente), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(Utils.retornoPadrao(e.getLocalizedMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }

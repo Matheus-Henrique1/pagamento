@@ -12,8 +12,10 @@ import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Singleton
 @RequiredArgsConstructor
@@ -26,11 +28,13 @@ public class FaturaServiceImpl implements FaturaService {
     public Fatura criarPrimeiraFatura(ContaCorrente contaCorrente) {
         Fatura fatura = new Fatura();
         fatura.setStatus(StatusFaturaEnum.ABERTA.getDescricao());
+        fatura.setMesDaFatura(LocalDate.now().getMonthValue());
         fatura.setContaCorrente(contaCorrente);
         fatura = faturaRepository.save(fatura);
         return fatura;
     }
 
+    @Transactional
     @Override
     public Fatura buscarFaturaAberta(Long contaCorrente) {
         return faturaRepository.buscarFaturaAbertaPorIdContaCorrente(contaCorrente);
@@ -38,16 +42,34 @@ public class FaturaServiceImpl implements FaturaService {
 
     @Transactional
     @Override
-    public Fatura criarFaturasFuturas(ContaCorrente contaCorrente, int mes) {
-        Fatura fatura = new Fatura();
-        fatura.setContaCorrente(contaCorrente);
-        fatura.setMesDaFatura(mes);
-        return faturaRepository.save(fatura);
-    }
+    public void fecharFatura(Long idFaturaAberta, Long contaCorrente) {
+        Optional<Fatura> faturaAberta = (faturaRepository.buscarFaturaAbertaPorIdFaturaEIdContaCorrente(idFaturaAberta, contaCorrente));
+        if (faturaAberta.isPresent()) {
+            Fatura fatura = faturaAberta.get();
+            fatura.setStatus(StatusFaturaEnum.FECHADA.getDescricao());
+            faturaRepository.save(fatura);
 
-    @Transactional
-    @Override
-    public void fecharFatura() {
+            /**
+             * o bloco a seguir irá deixar uma fatura aberta caso exista faturas futuras ou ira abrir uma nova.
+             */
+
+            Integer mesFaturaFechada = (fatura.getMesDaFatura() + 1);
+            mesFaturaFechada = mesFaturaFechada > 12 ? 1 : mesFaturaFechada;
+            Optional<Fatura> faturaQueSeraAberta = faturaRepository.findByMesDaFatura(mesFaturaFechada);
+            if (faturaQueSeraAberta.isPresent()) {
+                Fatura fatura2 = faturaQueSeraAberta.get();
+                fatura2.setStatus(StatusFaturaEnum.ABERTA.getDescricao());
+                faturaRepository.save(fatura2);
+            }else{
+                Fatura faturaNovaAberta = new Fatura();
+                faturaNovaAberta.setContaCorrente(faturaAberta.get().getContaCorrente());
+                faturaNovaAberta.setStatus(StatusFaturaEnum.ABERTA.getDescricao());
+                faturaNovaAberta.setMesDaFatura(faturaAberta.get().getMesDaFatura() >= 12 ? 1 : (faturaAberta.get().getMesDaFatura() + 1));
+                faturaRepository.save(faturaNovaAberta);
+            }
+        } else {
+            throw new RuntimeException("Não foram encontradas faturas abertas com o id " + idFaturaAberta + ", e com o número de conta corrente " + contaCorrente);
+        }
     }
 
     @Transactional
@@ -64,7 +86,7 @@ public class FaturaServiceImpl implements FaturaService {
         return retorno;
     }
 
-
+    @Transactional
     @Override
     public List<Fatura> buscarFaturasFuturas() {
         List<Fatura> faturasFuturas = faturaRepository.findByStatus(StatusFaturaEnum.FUTURA.getDescricao());

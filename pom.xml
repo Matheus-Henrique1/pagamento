@@ -98,10 +98,11 @@
     </dependency>
 
     <dependency>
-      <groupId>org.modelmapper</groupId>
-      <artifactId>modelmapper</artifactId>
-      <version>2.4.4</version>
+      <groupId>io.micronaut.openapi</groupId>
+      <artifactId>micronaut-openapi-annotations</artifactId>
+      <version>6.7.0</version>
     </dependency>
+
 
   </dependencies>
 
@@ -124,6 +125,10 @@
               <groupId>org.projectlombok</groupId>
               <artifactId>lombok</artifactId>
               <version>${lombok.version}</version>
+            </path>
+            <path>
+              <groupId>io.micronaut.openapi</groupId>
+              <artifactId>micronaut-openapi</artifactId>
             </path>
             <path>
               <groupId>io.micronaut</groupId>
@@ -154,6 +159,17 @@
           <compilerArgs>
             <arg>-Amicronaut.processing.group=com.inter</arg>
             <arg>-Amicronaut.processing.module=pagamento</arg>
+          </compilerArgs>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <fork>true</fork>
+          <compilerArgs>
+            <arg>-J-Dmicronaut.openapi.views.spec=rapidoc.enabled=true,swagger-ui.enabled=true,swagger-ui.theme=flattop</arg>
+            ...
           </compilerArgs>
         </configuration>
       </plugin>

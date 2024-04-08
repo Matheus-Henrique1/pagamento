@@ -12,9 +12,7 @@ public interface FaturaService {
 
     Fatura buscarFaturaAberta(Long contaCorrente);
 
-    Fatura criarFaturasFuturas(ContaCorrente contaCorrente, int mes);
-
-    void fecharFatura();
+    void fecharFatura(Long idFaturaAberta,Long contaCorrente);
 
     RetornoPadraoDTO buscarFaturas();
 
