@@ -37,4 +37,7 @@ public class Fatura implements Serializable {
     @JoinColumn(name = "id_conta_corrente")
     private ContaCorrente contaCorrente;
 
+    @Column(name = "ano_fatura")
+    private Integer anoFatura;
+
 }

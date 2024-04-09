@@ -28,7 +28,7 @@ public class ClienteDTO implements Serializable {
     @Size(min = 1, max = 200)
     private String nome;
     @NotBlank(message = Mensagens.CPF_OBRIGATORIO)
-    @Size(min = 11, max = 11, message = Mensagens.CPF_CARACTERES)
+    @Size(min = 11, max = 11, message = Mensagens.CPF_NUMERO_CARACTERES)
     private String cpf;
     @NotNull(message = Mensagens.DT_NASCIMENTO_OBRIGATORIO)
     private LocalDate datNascimento;

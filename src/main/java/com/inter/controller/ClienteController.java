@@ -21,7 +21,6 @@ public class ClienteController {
 
     private final ClienteService clienteService;
 
-
     @Post
     public ResponseEntity<RetornoPadraoDTO> cadastrar(@Body @Valid ClienteDTO clienteDTO) {
         try {

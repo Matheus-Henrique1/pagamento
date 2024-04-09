@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import javax.validation.Valid;
+import java.time.DateTimeException;
 
 @Validated
 @RequiredArgsConstructor
@@ -23,6 +24,8 @@ public class TransacaoController {
     public ResponseEntity<RetornoPadraoDTO> criarTransacao(@Body @Valid TransacaoDTO transacaoDTO) {
         try {
             return new ResponseEntity<>(transacaoService.criarTransacao(transacaoDTO), HttpStatus.CREATED);
+        } catch (DateTimeException e) {
+            return new ResponseEntity<>(Utils.retornoPadrao(e.getLocalizedMessage()), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             return new ResponseEntity<>(Utils.retornoPadrao(e.getLocalizedMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }

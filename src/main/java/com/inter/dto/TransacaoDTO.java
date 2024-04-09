@@ -24,7 +24,7 @@ import java.time.LocalDate;
 public class TransacaoDTO implements Serializable {
 
     private Long id;
-    @NotNull(message = Mensagens.DATA_TRANSACAO_OBRIGATORIO)
+    @NotNull(message = Mensagens.DATA_TRANSACAO_OBRIGATORIA)
     private LocalDate dataTransacao;
     @NotBlank(message = Mensagens.NOME_ESTABELECIMENTO_OBRIGATORIO)
     @Size(min = 1, max = 200)

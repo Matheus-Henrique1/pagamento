@@ -19,7 +19,11 @@ import lombok.RequiredArgsConstructor;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.DateTimeException;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Singleton
@@ -34,35 +38,51 @@ public class TransacaoServiceImpl implements TransacaoService {
     @Transactional
     @Override
     public RetornoPadraoDTO criarTransacao(TransacaoDTO transacaoDTO) {
+
+        if (transacaoDTO.getDataTransacao().isAfter(LocalDate.now())
+                || (transacaoDTO.getDataTransacao().getYear() < LocalDate.now().getYear()
+                || transacaoDTO.getDataTransacao().getMonthValue() < LocalDate.now().getMonthValue())) {
+            throw new DateTimeException(Mensagens.DATA_IVALIDA);
+        }
+
         ContaCorrente cc = contaCorrenteService.buscarContaCorrente(transacaoDTO.getNumeroContaCorrente());
-        List<Fatura> faturasFuturas = faturaService.buscarFaturasFuturas();
         Fatura fatura = faturaService.buscarFaturaAberta(transacaoDTO.getNumeroContaCorrente());
-        Integer mesDaFaturaAberta = fatura.getMesDaFatura() == null ? transacaoDTO.getDataTransacao().getMonthValue() : fatura.getMesDaFatura();
+        List<Fatura> faturasFuturas = faturaService.buscarFaturasFuturas();
+        Integer mesDaFaturaAberta = fatura.getMesDaFatura();
         Integer numeroDeParcelas = transacaoDTO.getNumeroDeParcelas();
 
-        if (numeroDeParcelas == 1) {
-            fatura.setMesDaFatura(transacaoDTO.getDataTransacao().getMonthValue());
-            transacaoDTO.setValorDaParcela(transacaoDTO.getValorDaTransacao().divide(BigDecimal.valueOf(numeroDeParcelas), 2, RoundingMode.HALF_UP));
-            transacaoRepository.save(Converte.converteTransacaoDTOTransacao(transacaoDTO, fatura));
-            return new RetornoPadraoDTO(Mensagens.TRANSACAO_SUCESSO, fatura.getId());
+        transacaoDTO.setParcelaAtual(1);
+        fatura.setMesDaFatura(transacaoDTO.getDataTransacao().getMonthValue());
+        transacaoDTO.setValorDaParcela(transacaoDTO.getValorDaTransacao().divide(BigDecimal.valueOf(numeroDeParcelas), 2, RoundingMode.HALF_UP));
+        transacaoRepository.save(Converte.converteTransacaoDTOTransacao(transacaoDTO, fatura));
+
+        if (faturasFuturas.isEmpty() || faturasFuturas.size() < transacaoDTO.getNumeroDeParcelas()) {
+            for (int i = 2; i <= numeroDeParcelas; i++) {
+                ++mesDaFaturaAberta;
+                Fatura faturaFutura = new Fatura();
+                faturaFutura.setStatus(StatusFaturaEnum.FUTURA.getDescricao());
+                faturaFutura.setContaCorrente(cc);
+                faturaFutura.setMesDaFatura(mesDaFaturaAberta > 12 ? 1 : mesDaFaturaAberta);
+                transacaoDTO.setValorDaParcela(transacaoDTO.getValorDaTransacao().divide(BigDecimal.valueOf(numeroDeParcelas), 2, RoundingMode.HALF_UP));
+                transacaoDTO.setParcelaAtual(i);
+                faturaFutura.getTransacoes().add(Converte.converteTransacaoDTOTransacao(transacaoDTO, faturaFutura));
+                faturaRepository.save(faturaFutura);
+            }
         } else {
-            transacaoDTO.setParcelaAtual(1);
-            fatura.setMesDaFatura(transacaoDTO.getDataTransacao().getMonthValue());
-            transacaoDTO.setValorDaParcela(transacaoDTO.getValorDaTransacao().divide(BigDecimal.valueOf(numeroDeParcelas), 2, RoundingMode.HALF_UP));
-            transacaoRepository.save(Converte.converteTransacaoDTOTransacao(transacaoDTO, fatura));
-            if (faturasFuturas.isEmpty()) {
-                for (int i = 2; i <= numeroDeParcelas; i++) {
-                    Fatura faturaFutura = new Fatura();
-                    faturaFutura.setStatus(StatusFaturaEnum.FUTURA.getDescricao());
-                    faturaFutura.setContaCorrente(cc);
-                    faturaFutura.setMesDaFatura(mesDaFaturaAberta > 12 ? 1 : (i - 1));
+            if (transacaoDTO.getNumeroDeParcelas() > 1) {
+                Comparator<Fatura> comparador = Comparator.comparing(Fatura::getMesDaFatura);
+                Collections.sort(faturasFuturas, comparador);
+
+                for (int i = 0; i < numeroDeParcelas; i++) {
+                    Fatura fatura2 = faturasFuturas.get(i);
                     transacaoDTO.setValorDaParcela(transacaoDTO.getValorDaTransacao().divide(BigDecimal.valueOf(numeroDeParcelas), 2, RoundingMode.HALF_UP));
-                    transacaoDTO.setParcelaAtual(i);
-                    faturaFutura.getTransacoes().add(Converte.converteTransacaoDTOTransacao(transacaoDTO, faturaFutura));
-                    faturaRepository.save(faturaFutura);
+                    transacaoDTO.setParcelaAtual(i == 1 ? (i + 1) : (i + 2));
+                    fatura2.getTransacoes().add(Converte.converteTransacaoDTOTransacao(transacaoDTO, fatura2));
+                    faturaRepository.save(fatura2);
                 }
             }
         }
+
         return new RetornoPadraoDTO(Mensagens.TRANSACAO_SUCESSO, fatura.getId());
     }
 
@@ -72,9 +92,9 @@ public class TransacaoServiceImpl implements TransacaoService {
         RetornoPadraoDTO retorno = new RetornoPadraoDTO<>();
         List<Transacao> transacao = transacaoRepository.buscaFaturaPorMesEContaCorrente(mes, contaCorrente);
         List<TransacaoDTO> listaTransacaoDTO = new ArrayList<>();
-        transacao.forEach(t->{
-            listaTransacaoDTO.add(Converte.converterTransacaoParaTransacaoDTO(t));
-        });
+        transacao.forEach(t ->
+                listaTransacaoDTO.add(Converte.converterTransacaoParaTransacaoDTO(t))
+        );
         retorno.setDados(listaTransacaoDTO);
         return retorno;
     }

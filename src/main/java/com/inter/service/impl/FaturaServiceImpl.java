@@ -30,6 +30,7 @@ public class FaturaServiceImpl implements FaturaService {
         fatura.setStatus(StatusFaturaEnum.ABERTA.getDescricao());
         fatura.setMesDaFatura(LocalDate.now().getMonthValue());
         fatura.setContaCorrente(contaCorrente);
+        fatura.setAnoFatura(LocalDate.now().getYear());
         fatura = faturaRepository.save(fatura);
         return fatura;
     }
@@ -49,22 +50,19 @@ public class FaturaServiceImpl implements FaturaService {
             fatura.setStatus(StatusFaturaEnum.FECHADA.getDescricao());
             faturaRepository.save(fatura);
 
-            /**
-             * o bloco a seguir irá deixar uma fatura aberta caso exista faturas futuras ou ira abrir uma nova.
-             */
+            //O bloco a seguir irá deixar uma fatura aberta caso exista faturas futuras ou ira abrir uma nova.
+            int mesFaturaSeguinte = (fatura.getMesDaFatura() + 1) >= 12 ? 1 : (fatura.getMesDaFatura() + 1);
 
-            Integer mesFaturaFechada = (fatura.getMesDaFatura() + 1);
-            mesFaturaFechada = mesFaturaFechada > 12 ? 1 : mesFaturaFechada;
-            Optional<Fatura> faturaQueSeraAberta = faturaRepository.findByMesDaFatura(mesFaturaFechada);
+            Optional<Fatura> faturaQueSeraAberta = faturaRepository.findByMesDaFatura(mesFaturaSeguinte);
             if (faturaQueSeraAberta.isPresent()) {
                 Fatura fatura2 = faturaQueSeraAberta.get();
                 fatura2.setStatus(StatusFaturaEnum.ABERTA.getDescricao());
                 faturaRepository.save(fatura2);
-            }else{
+            } else {
                 Fatura faturaNovaAberta = new Fatura();
                 faturaNovaAberta.setContaCorrente(faturaAberta.get().getContaCorrente());
                 faturaNovaAberta.setStatus(StatusFaturaEnum.ABERTA.getDescricao());
-                faturaNovaAberta.setMesDaFatura(faturaAberta.get().getMesDaFatura() >= 12 ? 1 : (faturaAberta.get().getMesDaFatura() + 1));
+                faturaNovaAberta.setMesDaFatura(mesFaturaSeguinte);
                 faturaRepository.save(faturaNovaAberta);
             }
         } else {

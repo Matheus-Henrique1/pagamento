@@ -15,6 +15,8 @@ import java.io.Serializable;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RetornoPadraoDTO<T> implements Serializable {
 
+    private static final long serialVersionUID = 1905122041950251207L;
+
     private String mensagem;
     private T dados;
 
