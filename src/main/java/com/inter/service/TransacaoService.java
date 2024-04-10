@@ -5,7 +5,7 @@ import com.inter.dto.TransacaoDTO;
 
 public interface TransacaoService {
 
-    RetornoPadraoDTO criarTransacao(TransacaoDTO transacaoDTO) ;
+    RetornoPadraoDTO criarTransacao(TransacaoDTO transacaoDTO);
 
     RetornoPadraoDTO buscaTransacoesPorMesEContaCorrente(Long mes, Long contaCorrente);
 

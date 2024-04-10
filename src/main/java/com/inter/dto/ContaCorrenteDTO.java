@@ -20,4 +20,5 @@ public class ContaCorrenteDTO implements Serializable {
     private Long id;
     private Long numeroConta;
     private ClienteDTO cliente;
+
 }
