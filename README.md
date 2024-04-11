@@ -1,26 +1,33 @@
-## Micronaut 3.10.1 Documentation
+## PROCESSO SELETIVO INTER!
 
-- [User Guide](https://docs.micronaut.io/3.10.1/guide/index.html)
-- [API Reference](https://docs.micronaut.io/3.10.1/api/index.html)
-- [Configuration Reference](https://docs.micronaut.io/3.10.1/guide/configurationreference.html)
-- [Micronaut Guides](https://guides.micronaut.io/index.html)
----
+--> Neste desafio foi proposto a criação de API's que simulassem transações de compras com ou sem parcelas.
 
-- [Micronaut Maven Plugin documentation](https://micronaut-projects.github.io/micronaut-maven-plugin/latest/)
-## Feature lombok documentation
+## TECNOLOGIAS USADAS!
+- Micronaut
+- Java 11
+- Banco de dados H2
+- Maven
+- Junit
 
-- [Micronaut Project Lombok documentation](https://docs.micronaut.io/latest/guide/index.html#lombok)
+Foram criadas API's no padrão REST com o padrão de arquitetura MVC.
 
-- [https://projectlombok.org/features/all](https://projectlombok.org/features/all)
+## SWAGGER
+- Observação a respeito do swagger:
+  Tenho experiência e prática com a ferramenta, porém, devido a versão do micronaut que foi utilizada neste projeto não foi possível a implementação do swagger no mesmo.
+  Foi adicionado uma collection do postman na pasta etc, na raiz do projeto, que contém todas as request utilizadas neste projeto.
+
+## INICIALIZAÇÃO DO PROJETO
+
+- É necessário ter instalado na máquina a IDE IntelliJ ou eclipse, Maven e o JDK 11
+- Faça o clone do projeto com o comando a seguir:
+  git clone https://github.com/Matheus-Henrique1/pagamento.git
+- Em seguida abra o projeto na IDE, espere até que o projeto seja indexado e em seguida, na classe Application starte o projeto
 
 
-## Feature jdbc-hikari documentation
-
-- [Micronaut Hikari JDBC Connection Pool documentation](https://micronaut-projects.github.io/micronaut-sql/latest/guide/index.html#jdbc)
+  
 
 
-## Feature http-client documentation
 
-- [Micronaut HTTP Client documentation](https://docs.micronaut.io/latest/guide/index.html#httpClient)
+
 
 
