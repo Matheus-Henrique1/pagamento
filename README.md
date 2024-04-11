@@ -18,10 +18,11 @@ Foram criadas API's no padrão REST com o padrão de arquitetura MVC.
 
 ## INICIALIZAÇÃO DO PROJETO
 
-- É necessário ter instalado na máquina a IDE IntelliJ ou eclipse, Maven e o JDK 11
+- É necessário ter instalado na máquina JDK 11, Maven e uma IDE de sua preferência 
 - Faça o clone do projeto com o comando a seguir:
   git clone https://github.com/Matheus-Henrique1/pagamento.git
-- Em seguida abra o projeto na IDE, espere até que o projeto seja indexado e em seguida, na classe Application starte o projeto
+- Para iniciar os testes de integração, primeiro é necessário cadastrar um cliente. O retorno desse cadastro é o número da conta corrente
+- Com o número da conta corrente gerado, é possível seguir com o escopo solicitado na descrição do desafio.
 
 
   
