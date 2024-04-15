@@ -6,7 +6,6 @@ import com.inter.entity.ContaCorrente;
 import com.inter.entity.Fatura;
 import com.inter.entity.Transacao;
 import com.inter.enums.StatusFaturaEnum;
-import com.inter.exception.ValidarTransacao;
 import com.inter.repository.FaturaRepository;
 import com.inter.repository.TransacaoRepository;
 import com.inter.service.ContaCorrenteService;
@@ -14,6 +13,7 @@ import com.inter.service.FaturaService;
 import com.inter.service.TransacaoService;
 import com.inter.utils.Converte;
 import com.inter.utils.Mensagens;
+import com.inter.utils.ValidarTransacao;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 

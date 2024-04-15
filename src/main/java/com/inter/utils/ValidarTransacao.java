@@ -1,7 +1,7 @@
-package com.inter.exception;
+package com.inter.utils;
 
 import com.inter.dto.TransacaoDTO;
-import com.inter.utils.Mensagens;
+import com.inter.exception.NumeroParcelasException;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
@@ -18,10 +18,10 @@ public class ValidarTransacao {
             throw new DateTimeException(Mensagens.DATA_IVALIDA);
         }
         if (transacaoDTO.getNumeroDeParcelas() < 1) {
-            throw new NumeroParcelasException("O número de parcelas não pode ser menor que 1.");
+            throw new NumeroParcelasException(Mensagens.NUMERO_PARCELAS_MENOR_QUE_UM);
         }
         if (transacaoDTO.getNumeroDeParcelas() > 12) {
-            throw new NumeroParcelasException("A compra só pode ser parcelada no máximo em até 12 vezes.");
+            throw new NumeroParcelasException(Mensagens.NUMERO_PARCELAS_EXCEDIDAS);
         }
     }
 

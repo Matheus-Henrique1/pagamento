@@ -8,6 +8,7 @@ import com.inter.enums.StatusFaturaEnum;
 import com.inter.repository.FaturaRepository;
 import com.inter.service.FaturaService;
 import com.inter.utils.Converte;
+import com.inter.utils.Mensagens;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 
@@ -66,7 +67,7 @@ public class FaturaServiceImpl implements FaturaService {
                 faturaRepository.save(faturaNovaAberta);
             }
         } else {
-            throw new RuntimeException("Não foram encontradas faturas abertas com o id " + idFaturaAberta + ", e com o número de conta corrente " + contaCorrente);
+            throw new RuntimeException(Mensagens.FATURA_NAO_ENCONTRADA);
         }
     }
 

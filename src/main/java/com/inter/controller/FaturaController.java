@@ -19,6 +19,7 @@ public class FaturaController {
 
     @Patch(value = "/fechar-fatura/{idFaturaAberta}/{contaCorrente}")
     public void fecharFatura(@PathVariable Long idFaturaAberta, @PathVariable Long contaCorrente) {
+
         faturaService.fecharFatura(idFaturaAberta, contaCorrente);
     }
 

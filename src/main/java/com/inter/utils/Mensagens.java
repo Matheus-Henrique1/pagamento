@@ -13,6 +13,8 @@ public class Mensagens {
     public static final String CPF_NUMERO_CARACTERES = "O campo CPF deve conter 11 caracteres.";
     public static final String DT_NASCIMENTO_OBRIGATORIO = "O campo data de nascimento é obrigatório.";
     public static final String CODIGO_MES_INVALIDO = "Código do mês inválido";
+    public static final String NUMERO_PARCELAS_MENOR_QUE_UM = "O número de parcelas não pode ser menor que 1.";
+    public static final String NUMERO_PARCELAS_EXCEDIDAS = "A compra só pode ser parcelada no máximo em até 12 vezes.";
 
     //Mensagens sobre transações
     public static final String TRANSACAO_SUCESSO = "Transação processada com sucesso. Abaixo id da Fatura!";
@@ -23,5 +25,8 @@ public class Mensagens {
     public static final String NUMERO_PARCELAS_OBRIGATORIO = "O campo data numero de parcelas é obrigatório.";
     public static final String NUMERO_CONTA_CORRENTE_OBRIGATORIO = "O campo data numero conta corrente é obrigatório.";
     public static final String DATA_IVALIDA = "A data informada não pode ser maior ou superior a data/mês atual!";
+
+    //Mensagens sobre fatura
+    public static final String FATURA_NAO_ENCONTRADA = "Não foi encontrada fatura aberta com o id e conta corrente informados.";
 
 }

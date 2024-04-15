@@ -2,6 +2,7 @@ package com.inter.controller;
 
 import com.inter.dto.RetornoPadraoDTO;
 import com.inter.dto.TransacaoDTO;
+import com.inter.exception.NumeroParcelasException;
 import com.inter.service.TransacaoService;
 import com.inter.utils.Utils;
 import io.micronaut.http.annotation.*;
@@ -24,7 +25,7 @@ public class TransacaoController {
     public ResponseEntity<RetornoPadraoDTO> criarTransacao(@Body @Valid TransacaoDTO transacaoDTO) {
         try {
             return new ResponseEntity<>(transacaoService.criarTransacao(transacaoDTO), HttpStatus.CREATED);
-        } catch (DateTimeException e) {
+        } catch (DateTimeException | NumeroParcelasException e) {
             return new ResponseEntity<>(Utils.retornoPadrao(e.getLocalizedMessage()), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             return new ResponseEntity<>(Utils.retornoPadrao(e.getLocalizedMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
