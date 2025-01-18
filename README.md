@@ -11,11 +11,6 @@
 
 Foram criadas API's no padrão REST com o padrão de arquitetura MVC.
 
-## SWAGGER
-- Observação a respeito do swagger:
-  Tenho experiência e prática com a ferramenta, porém, devido a versão do micronaut que foi utilizada neste projeto não foi possível a implementação do swagger no mesmo.
-  Foi adicionado uma collection do postman na pasta etc, na raiz do projeto, que contém todas as request utilizadas neste projeto.
-
 ## INICIALIZAÇÃO DO PROJETO
 
 - É necessário ter instalado na máquina JDK 11, Maven e uma IDE de sua preferência 
